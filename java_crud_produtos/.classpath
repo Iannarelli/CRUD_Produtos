@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="C:/Iannarelli/Desenvolvimento/Git/CRUD_Produtos/java_crud_produtos/library/simple/simple-common-6.0.1.jar"/>
+	<classpathentry kind="lib" path="C:/Iannarelli/Desenvolvimento/Git/CRUD_Produtos/java_crud_produtos/library/simple/simple-http-6.0.1.jar"/>
+	<classpathentry kind="lib" path="C:/Iannarelli/Desenvolvimento/Git/CRUD_Produtos/java_crud_produtos/library/simple/simple-transport-6.0.1.jar"/>
+	<classpathentry kind="lib" path="C:/Iannarelli/Desenvolvimento/Git/CRUD_Produtos/java_crud_produtos/library/simple/simple-xml-2.7.1.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>

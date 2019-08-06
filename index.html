@@ -5,24 +5,31 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 </head>
 <body>
-    <form id="produtos" action="">
+    <form id="produto" action="">
         <label for="codigoPdt">Código</label>
-        <input id="codigoPdt" type="number" min="1" max="9999999999"><br>
+        <input name="codigo" id="codigoPdt" type="number" min="1" max="9999999999" required><br>
         <label for="nomePdt">Nome</label>
-        <input id="nomePdt" type="text" maxlength="15"><br>
+        <input name="nome" id="nomePdt" type="text" maxlength="15" required><br>
         <label for="precoPdt">Preço</label>
-        <input id="precoPdt" type="number" min="0.01" step="0.01"><br>
+        <input name="preco" id="precoPdt" type="number" min="0.01" step="0.01" required><br>
         <label for="descricaoPdt">Descrição</label>
-        <input id="descricaoPdt" type="text" maxlength="30"><br>
+        <input name="descricao" id="descricaoPdt" type="text" maxlength="30"><br>
         <label for="tipoPdt">Tipo</label>
-        <select name="tipo" id="tipoPdt">
+        <select name="tipo" id="tipoPdt" required>
+            <option></option>
             <option value="A">A - alimentos</option>
             <option value="B">B - bebidas</option>
             <option value="C">S - sobremesas</option>
             <option value="D">E - entradas</option>
         </select>
     </form>
+    <button onclick="cadastrar()">Cadastrar</button>
+
+    <div></div>
+    <script src="js.js"></script>
+
 </body>
 </html>

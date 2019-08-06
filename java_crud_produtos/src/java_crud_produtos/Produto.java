@@ -1,4 +1,4 @@
-package crud_produtos;
+package java_crud_produtos;
 
 public class Produto {
 
