@@ -34,6 +34,9 @@ public class ConexaoAPI {
 //		String json = "{\n\t\"token\":  \"CQG6BJPWT9GR4P\",\n\t\"codigo\": \"7\",\n\t\"nome\":   \"TóRTA DE BAUNILHA\",\n\t\"preco\":  7.5,\n\t\"tipo\": \"S\",\n\t\"descricao\": \"TORTA CASEIRA SABOR BAUNILHA\"\n}";
 		URL destino = new URL(url);
 		HttpURLConnection conexao = (HttpURLConnection) destino.openConnection();
+		System.out.println("Endereço: " + url);
+		System.out.println("JSON: " + json.toString());
+		System.out.println("Método: " + metodo);
 //		conexao.setConnectTimeout(30000);
 		conexao.setReadTimeout(0);
 		conexao.setRequestMethod(metodo.toUpperCase());

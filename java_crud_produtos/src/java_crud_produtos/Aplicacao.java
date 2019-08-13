@@ -1,6 +1,7 @@
 package java_crud_produtos;
 
 import java.awt.Desktop;
+import java.io.IOException;
 import java.io.PrintStream;
 import java.net.InetSocketAddress;
 import java.net.SocketAddress;
@@ -31,7 +32,6 @@ public class Aplicacao implements Container {
 					else
 						enviaResposta(Status.CREATED, response, "");
 				} catch (Exception e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			System.out.println(Long.parseLong(request.getQuery().get("codigo")));
@@ -42,12 +42,32 @@ public class Aplicacao implements Container {
 				JSONArray json = crud.listarProdutos();
 				enviaResposta(Status.OK, response, json.toString());
 			} catch (Exception e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+			System.out.println(Long.parseLong(request.getQuery().get("codigo")));
+			System.out.println("vou fazer isso");
+		}
+		if (path.equalsIgnoreCase("/produto/delete") && method.equalsIgnoreCase("post")) {
+				try {
+					crud.deletarProduto(request.getContent());
+					enviaResposta(Status.OK, response, "");
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+		}
+		if (path.equalsIgnoreCase("/produto/update") && method.equalsIgnoreCase("post")) {
+			try {
+				if(crud.adicionarProduto(request.getQuery()))
+					enviaResposta(Status.NOT_FOUND, response, "");
+				else
+					enviaResposta(Status.OK, response, "");
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
 		System.out.println(Long.parseLong(request.getQuery().get("codigo")));
 		System.out.println("vou fazer isso");
-	}
+
 		System.out.println("Request: " + request.getQuery().toString());
 		System.out.println(path + " / " + method);
 	}

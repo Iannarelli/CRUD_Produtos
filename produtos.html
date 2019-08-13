@@ -1,16 +1,49 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 </head>
-<body onload="listar()">
+
+<body onload="listar(0)">
     <div id="div_produtos"></div>
-<table>
-    ************* CONTINUA AQUI ***************** (CRIAT TABELA PARA LEVAR PARA js)
-</table>
+    <table id="principal" class="table table-striped">
+        <thead>
+            <tr>
+                <th>Nome</th>
+                <th>Preço (R$)</th>
+                <th>Descrição</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody id="tabProdutos">
+
+        </tbody>
+    </table>
+    <div id="alteraForm" style="display: none">
+        <form id="updateProduto" action="">
+            <label for="nomeUpdate">Nome</label>
+            <input name="nome" id="nomeUpdate" type="text" maxlength="15" required><br>
+            <label for="precoUpdate">Preço</label>
+            <input name="preco" id="precoUpdate" type="number" min="0.01" step="0.01" required><br>
+            <label for="descricaoUpdate">Descrição</label>
+            <input name="descricao" id="descricaoUpdate" type="text" maxlength="30"><br>
+            <label for="tipoUpdate">Tipo</label>
+            <select name="tipo" id="tipoUpdate" required>
+                <option></option>
+                <option value="A">A - alimentos</option>
+                <option value="B">B - bebidas</option>
+                <option value="C">S - sobremesas</option>
+                <option value="D">E - entradas</option>
+            </select>
+        </form>
+        <button onclick="enviaAlteracao()">Alterar</button>
+    </div>
     <script src="js.js"></script>
 </body>
+
 </html>

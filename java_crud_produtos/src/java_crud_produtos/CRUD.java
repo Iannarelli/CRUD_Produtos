@@ -9,9 +9,13 @@ public class CRUD {
 	private static ConexaoAPI conexao = new ConexaoAPI();
 	
 	public boolean adicionarProduto (Query query) throws Exception {
-		String json_string = "{\"token\":\""+conexao.getToken()+"\",\"codigo\":\""+query.get("codigo")+"\",\"nome\":\""
-				+query.get("nome")+"\",\"preco\":"+query.getFloat("preco")+",\"tipo\":\""+query.get("tipo")+"\",\"descricao\":\""
-				+query.get("descricao")+"\"}";
+		String json_string = "{\"token\":\"" + conexao.getToken()
+							+ "\",\"codigo\":\"" + Long.parseLong(query.get("codigo"))
+							+ "\",\"nome\":\"" + query.get("nome")
+							+ "\",\"preco\":" + query.getFloat("preco")
+							+ ",\"tipo\":\"" + query.get("tipo")
+							+ "\",\"descricao\":\"" + query.get("descricao")
+							+ "\"}";
 		String[] retorno = conexao.conectarAPI(conexao.getUrl()+"produto/add", json_string, "POST");
 //		System.out.println(retorno[0].toString() + " *** " + retorno[1].toString() + " *** " + retorno[2].toString());
 		if (new JSONObject(retorno[2]).get("error").toString().equalsIgnoreCase("false")) {
@@ -31,13 +35,40 @@ public class CRUD {
 		System.out.println("teste: " + teste.toString());
 		System.out.println("teste produtos: " + teste.get("produtos"));
 		JSONArray produtos = new JSONArray(new JSONObject(retorno[2]).get("produtos").toString());
-		System.out.println("primeiro json: " + produtos.toString());
-		System.out.println("primeiro item: " + produtos.get(0).toString());
+		if(produtos.length() > 0) {
+			System.out.println("primeiro json: " + produtos.toString());
+			System.out.println("primeiro item: " + produtos.get(0).toString());
+		}
 //		JSONObject produtos = new JSONObject(itens.get("produtos"));
 //		System.out.println("segundo json: " + produtos.get.toString());
 		return produtos;
 	}
-	
+
+	public void deletarProduto(String codigo) throws Exception {
+		String[] retorno = conexao.conectarAPI(conexao.getUrl()+"produto/" + codigo + "/delete",
+				"{\"token\":\"" + conexao.getToken() + "\"}", "POST");
+		System.out.println("Retorno de deletar: " + retorno[0].toString() + retorno[1].toString() + retorno[2].toString());
+	}
+
+	public boolean alterarProduto (Query query) throws Exception {
+		String json_string = "{\"token\":\"" + conexao.getToken()
+							+ "\",\"nome\":\"" + query.get("nome")
+							+ "\",\"preco\":" + query.getFloat("preco")
+							+ ",\"tipo\":\"" + query.get("tipo")
+							+ "\",\"descricao\":\"" + query.get("descricao")
+							+ "\"}";
+		String[] retorno = conexao.conectarAPI(conexao.getUrl()+"produto/" + Long.parseLong(query.get("codigo")) + "/update",
+				json_string, "POST");
+//		System.out.println(retorno[0].toString() + " *** " + retorno[1].toString() + " *** " + retorno[2].toString());
+		if (new JSONObject(retorno[2]).get("error").toString().equalsIgnoreCase("false")) {
+//			System.out.println(new JSONObject(retorno[2]).get("error").toString());
+			return false;
+		}
+		else {
+//			System.out.println("Produto já cadastrado!");
+			return true;
+		}
+	}
 //	public boolean produtoExistente(Long codigo) throws Exception {
 //		conexao.conectarAPI("http://briansilva1.zeedhi.com/workfolder/processoseletivo/sistemaprodutos/produtos/CQG6BJPWT9GR4P", "", "GET");
 //		System.out.println(conexao.getConteudo()[2]);
