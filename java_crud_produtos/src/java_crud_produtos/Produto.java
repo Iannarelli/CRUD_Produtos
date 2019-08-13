@@ -1,17 +1,22 @@
 package java_crud_produtos;
 
-public class Produto {
+import org.json.JSONObject;
+import org.simpleframework.http.Query;
+
+public class Produto implements JsonFormatter {
 
 	private String codigo, nome, descricao, tipo;
 	private float preco;
 	
-	private Produto(String codigo, String nome, String descricao, String tipo, float preco) {
+	public Produto(String codigo, String nome, String descricao, String tipo, float preco) {
 		setCodigo(codigo);
 		setNome(nome);
 		setDescricao(descricao);
 		setTipo(tipo);
 		setPreco(preco);
 	}
+	
+	public Produto() {};
 
 	public String getCodigo() {
 		return codigo;
@@ -51,5 +56,24 @@ public class Produto {
 
 	public void setPreco(float preco) {
 		this.preco = preco;
+	}
+
+	public void adicionar(Query query) {
+		setCodigo(query.get("codigo"));
+		setNome(query.get("nome"));
+		setDescricao(query.get("descricao"));
+		setPreco(query.getFloat("preco"));
+		setTipo(query.get("tipo"));
+	}
+
+	@Override
+	public JSONObject toJson() {
+		JSONObject obj = new JSONObject();
+		obj.put("codigo", this.getCodigo());
+		obj.put("nome", this.getNome());
+		obj.put("descricao", this.getDescricao());
+		obj.put("preco", this.getPreco());
+		obj.put("tipo", this.getTipo());
+		return obj;
 	}
 }
