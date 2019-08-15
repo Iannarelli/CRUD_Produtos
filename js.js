@@ -100,14 +100,26 @@ function listar(opcao) {
                 }
                 else {
                     for (i = 0; i < json.length; i++) {
-                        tabela += `<tr>
-                            <td>${json[i].NOME}</td>
-                            <td class="colunaPreco">${parseFloat(json[i].PRECO).toFixed(2)}</td>
-                            <td>${json[i].DESCRICAO}</td>
-                            <td class="center">
-                                <span onclick="alterar(${i})" style="cursor:pointer;">&#9997;</span>
-                                <span onclick="deletar(${json[i].CODIGO})" style="cursor:pointer;">&#x1f5d1;</span>
-                            </td></tr>`;
+                        if(json[i].DESCRICAO == null) {
+                            tabela += `<tr>
+                                <td>${json[i].NOME}</td>
+                                <td class="colunaPreco">${parseFloat(json[i].PRECO).toFixed(2)}</td>
+                                <td></td>
+                                <td class="center">
+                                    <span onclick="alterar(${i})" style="cursor:pointer;">&#9997;</span>
+                                    <span onclick="deletar(${json[i].CODIGO})" style="cursor:pointer;">&#x1f5d1;</span>
+                                </td></tr>`;
+                        }
+                        else {
+                            tabela += `<tr>
+                                <td>${json[i].NOME}</td>
+                                <td class="colunaPreco">${parseFloat(json[i].PRECO).toFixed(2)}</td>
+                                <td>${json[i].DESCRICAO}</td>
+                                <td class="center">
+                                    <span onclick="alterar(${i})" style="cursor:pointer;">&#9997;</span>
+                                    <span onclick="deletar(${json[i].CODIGO})" style="cursor:pointer;">&#x1f5d1;</span>
+                                </td></tr>`;
+                        }
                     }
                     $("#tabProdutos")[0].innerHTML = tabela;
                     if (opcao == 0)
