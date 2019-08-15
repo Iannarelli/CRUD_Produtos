@@ -1,8 +1,10 @@
 package java_crud_produtos;
 
+import java.awt.Desktop;
 import java.io.PrintStream;
 import java.net.InetSocketAddress;
 import java.net.SocketAddress;
+import java.net.URI;
 import java.util.Scanner;
 
 import org.json.JSONArray;
@@ -88,14 +90,15 @@ public class Aplicacao implements Container {
 		Connection conexao = new SocketConnection(servidor);
 		SocketAddress endereco = new InetSocketAddress(porta);
 		conexao.connect(endereco);
-		
-		//Desktop.getDesktop().browse(new URI("https://pucweb-wesley-mouraria.azurewebsites.net/"));
 
 		Scanner entrada = new Scanner(System.in);
-		String a = "";
-		while (!a.equalsIgnoreCase("y")) {
-			System.out.println("Interromper o servidor? (y/n)");
-			a = entrada.next();
+		int opcao = 0;
+		System.out.print("Servidor iniciado.");
+		while (opcao != 2) {
+			System.out.print("\n\n1 - Abrir arquivo index.html\n2 - Interromper o servidor\n\nInforme a opção desejada: ");
+			opcao = entrada.nextInt();
+			if(opcao == 1)
+				Desktop.getDesktop().browse(new URI("../index.html"));
 		}
 		entrada.close();
 		conexao.close();
