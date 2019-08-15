@@ -1,0 +1,101 @@
+input, select {
+    width: 200px;
+    border: 1px solid rgb(169,169,169);
+    border-radius: 4px;
+}
+
+input {
+    padding: 0 4px;
+}
+
+input#codigoUpdate {
+    border: none;
+    background-color: transparent;
+}
+
+label {
+    width: 85px;
+    text-align: left;
+}
+
+div#form, div#btn {
+    margin: 30px auto;
+    text-align: center;
+}
+
+button {
+    width: 142px;
+}
+
+button#btnCadastrar {
+    width: 175px;
+    margin: 10px;
+}
+
+button#btnAlterar {
+    width: 290px;
+}
+
+button > span {
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-weight: bold;
+}
+
+div#listaProdutos {
+    max-width: 830px;
+    margin: auto;
+}
+
+.coluna {
+    width: 200px;
+}
+
+.colunaPreco {
+    text-align: right;
+    padding-right: 30px !important;
+}
+
+.colunaDescricao {
+    width: 350px;
+}
+
+.ultimaColuna {
+    width: 80px;
+}
+
+.center {
+    text-align: center;
+}
+
+#celulaConteudo {
+    text-align: center;
+    border-top: none;
+    padding-top: 0;
+    padding-bottom: 20px;
+}
+
+h1, h3 {
+    text-align: center;
+}
+
+div#erros {
+    width: 50%;
+    max-width: 500px;
+    margin: auto;
+    font-size: 14px;
+    text-align: justify;
+    font-style: italic;
+    margin-top: 50px;
+    color: red;
+}
+
+div#alteraForm div#erros {
+    width: 50%;
+    max-width: 500px;
+    margin: auto;
+    font-size: 14px;
+    text-align: justify;
+    font-style: italic;
+    margin-top: 20px;
+    color: red;
+}

@@ -1,15 +1,11 @@
 package java_crud_produtos;
 
-import java.awt.Desktop;
-import java.io.IOException;
 import java.io.PrintStream;
 import java.net.InetSocketAddress;
 import java.net.SocketAddress;
-import java.net.URI;
 import java.util.Scanner;
 
 import org.json.JSONArray;
-import org.json.JSONObject;
 import org.simpleframework.http.Request;
 import org.simpleframework.http.Response;
 import org.simpleframework.http.Status;
@@ -27,15 +23,16 @@ public class Aplicacao implements Container {
 		String method = request.getMethod();
 		if (path.equalsIgnoreCase("/produto/add") && method.equalsIgnoreCase("post")) {
 				try {
-					if(crud.adicionarProduto(request.getQuery()))
+					String resposta = crud.adicionarProduto(request.getQuery());
+					if(resposta.equalsIgnoreCase("true"))
 						enviaResposta(Status.NOT_IMPLEMENTED, response, "");
-					else
+					else if(resposta.equalsIgnoreCase("false"))
 						enviaResposta(Status.CREATED, response, "");
+					else
+						enviaResposta(Status.BAD_REQUEST, response, resposta);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
-			System.out.println(Long.parseLong(request.getQuery().get("codigo")));
-			System.out.println("vou fazer isso");
 		}
 		if (path.equalsIgnoreCase("/produtos/listar") && method.equalsIgnoreCase("get")) {
 			try {
@@ -44,8 +41,6 @@ public class Aplicacao implements Container {
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-			System.out.println(Long.parseLong(request.getQuery().get("codigo")));
-			System.out.println("vou fazer isso");
 		}
 		if (path.equalsIgnoreCase("/produto/delete") && method.equalsIgnoreCase("post")) {
 				try {
@@ -57,29 +52,25 @@ public class Aplicacao implements Container {
 		}
 		if (path.equalsIgnoreCase("/produto/update") && method.equalsIgnoreCase("post")) {
 			try {
-				if(crud.adicionarProduto(request.getQuery()))
+				String resposta = crud.alterarProduto(request.getQuery());
+				if (resposta.equalsIgnoreCase("true"))
 					enviaResposta(Status.NOT_FOUND, response, "");
-				else
+				else if (resposta.equalsIgnoreCase("false"))
 					enviaResposta(Status.OK, response, "");
+				else
+					enviaResposta(Status.BAD_REQUEST, response, resposta);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		}
-		System.out.println(Long.parseLong(request.getQuery().get("codigo")));
-		System.out.println("vou fazer isso");
-
-		System.out.println("Request: " + request.getQuery().toString());
-		System.out.println(path + " / " + method);
 	}
 
-	private void enviaResposta(Status status, Response response, String json/*, JSONObject JSON*/) throws Exception {
+	private void enviaResposta(Status status, Response response, String json) throws Exception {
 		PrintStream body = response.getPrintStream();
-//		long time = System.currentTimeMillis();
+
 		response.setValue("Access-Control-Allow-Origin", "*");
 		response.setValue("Content-Type", "application/x-www-form-urlencoded");
-//		response.setValue("Server", "");
-//		response.setDate("Date", time);
-//		response.setDate("Last-Modified", time);
+
 		response.setStatus(status);
 		if (json.equalsIgnoreCase(""))
 			body.println();
@@ -90,10 +81,6 @@ public class Aplicacao implements Container {
 
 	public static void main(String[] args) throws Exception {
 
-//		String json_string = "{\"message\":\"Produtos recuperados com sucesso.\",\"error\":false,\"produtos\":[]}";
-//		System.out.println("A string ficou: " + json_string);
-//		JSONObject json = new JSONObject(json_string);
-//		System.out.println(json.get("message"));
 		int porta = 880;
 
 		Container container = new Aplicacao();
@@ -101,7 +88,7 @@ public class Aplicacao implements Container {
 		Connection conexao = new SocketConnection(servidor);
 		SocketAddress endereco = new InetSocketAddress(porta);
 		conexao.connect(endereco);
-
+		
 		//Desktop.getDesktop().browse(new URI("https://pucweb-wesley-mouraria.azurewebsites.net/"));
 
 		Scanner entrada = new Scanner(System.in);

@@ -8,70 +8,82 @@ public class CRUD {
 
 	private static ConexaoAPI conexao = new ConexaoAPI();
 	
-	public boolean adicionarProduto (Query query) throws Exception {
-		String json_string = "{\"token\":\"" + conexao.getToken()
-							+ "\",\"codigo\":\"" + Long.parseLong(query.get("codigo"))
-							+ "\",\"nome\":\"" + query.get("nome")
-							+ "\",\"preco\":" + query.getFloat("preco")
-							+ ",\"tipo\":\"" + query.get("tipo")
-							+ "\",\"descricao\":\"" + query.get("descricao")
-							+ "\"}";
-		String[] retorno = conexao.conectarAPI(conexao.getUrl()+"produto/add", json_string, "POST");
-//		System.out.println(retorno[0].toString() + " *** " + retorno[1].toString() + " *** " + retorno[2].toString());
-		if (new JSONObject(retorno[2]).get("error").toString().equalsIgnoreCase("false")) {
-//			System.out.println(new JSONObject(retorno[2]).get("error").toString());
-			return false;
-		}
+	public String adicionarProduto (Query query) throws Exception {
+		JSONArray erros = new JSONArray(new JSONObject(erroPreenchimento(query)).get("erros").toString());
+		if(erros.length() > 0)
+			return erros.toString();
 		else {
-//			System.out.println("Produto já cadastrado!");
-			return true;
+			String json_string = "{\"token\":\"" + conexao.getToken()
+								+ "\",\"codigo\":\"" + Long.parseLong(query.get("codigo"))
+								+ "\",\"nome\":\"" + query.get("nome")
+								+ "\",\"preco\":" + query.getFloat("preco")
+								+ ",\"tipo\":\"" + query.get("tipo")
+								+ "\",\"descricao\":\"" + query.get("descricao")
+								+ "\"}";
+			String[] retorno = conexao.conectarAPI(conexao.getUrl()+"produto/add", json_string, "POST");
+			if (new JSONObject(retorno[2]).get("error").toString().equalsIgnoreCase("false"))
+				return "false";
+			else
+				return "true";
 		}
 	}
 	
 	public JSONArray listarProdutos() throws Exception {
 		String[] retorno = conexao.conectarAPI(conexao.getUrl()+"produtos/"+conexao.getToken(), "", "GET");
-		System.out.println("retorno 2: " + retorno[2]);
-		JSONObject teste = new JSONObject(retorno[2]);
-		System.out.println("teste: " + teste.toString());
-		System.out.println("teste produtos: " + teste.get("produtos"));
 		JSONArray produtos = new JSONArray(new JSONObject(retorno[2]).get("produtos").toString());
-		if(produtos.length() > 0) {
-			System.out.println("primeiro json: " + produtos.toString());
-			System.out.println("primeiro item: " + produtos.get(0).toString());
-		}
-//		JSONObject produtos = new JSONObject(itens.get("produtos"));
-//		System.out.println("segundo json: " + produtos.get.toString());
 		return produtos;
 	}
 
 	public void deletarProduto(String codigo) throws Exception {
-		String[] retorno = conexao.conectarAPI(conexao.getUrl()+"produto/" + codigo + "/delete",
-				"{\"token\":\"" + conexao.getToken() + "\"}", "POST");
-		System.out.println("Retorno de deletar: " + retorno[0].toString() + retorno[1].toString() + retorno[2].toString());
+		conexao.conectarAPI(conexao.getUrl()+"produto/" + codigo + "/delete", "{\"token\":\"" + conexao.getToken() + "\"}", "POST");
 	}
 
-	public boolean alterarProduto (Query query) throws Exception {
-		String json_string = "{\"token\":\"" + conexao.getToken()
-							+ "\",\"nome\":\"" + query.get("nome")
-							+ "\",\"preco\":" + query.getFloat("preco")
-							+ ",\"tipo\":\"" + query.get("tipo")
-							+ "\",\"descricao\":\"" + query.get("descricao")
-							+ "\"}";
-		String[] retorno = conexao.conectarAPI(conexao.getUrl()+"produto/" + Long.parseLong(query.get("codigo")) + "/update",
-				json_string, "POST");
-//		System.out.println(retorno[0].toString() + " *** " + retorno[1].toString() + " *** " + retorno[2].toString());
-		if (new JSONObject(retorno[2]).get("error").toString().equalsIgnoreCase("false")) {
-//			System.out.println(new JSONObject(retorno[2]).get("error").toString());
-			return false;
-		}
+	public String alterarProduto (Query query) throws Exception {
+		JSONArray erros = new JSONArray(new JSONObject(erroPreenchimento(query)).get("erros").toString());
+		if(erros.length() > 0)
+			return erros.toString();
 		else {
-//			System.out.println("Produto já cadastrado!");
-			return true;
+			String json_string = "{\"token\":\"" + conexao.getToken()
+								+ "\",\"nome\":\"" + query.get("nome")
+								+ "\",\"preco\":" + query.getFloat("preco")
+								+ ",\"tipo\":\"" + query.get("tipo")
+								+ "\",\"descricao\":\"" + query.get("descricao")
+								+ "\"}";
+			String[] retorno = conexao.conectarAPI(conexao.getUrl()+"produto/" + Long.parseLong(query.get("codigo")) + "/update",
+					json_string, "POST");
+			if (new JSONObject(retorno[2]).get("error").toString().equalsIgnoreCase("false"))
+				return "false";
+			else
+				return "true";
 		}
 	}
-//	public boolean produtoExistente(Long codigo) throws Exception {
-//		conexao.conectarAPI("http://briansilva1.zeedhi.com/workfolder/processoseletivo/sistemaprodutos/produtos/CQG6BJPWT9GR4P", "", "GET");
-//		System.out.println(conexao.getConteudo()[2]);
-//		return false;
-//	}
+	
+	public String erroPreenchimento(Query query) {
+		StringBuilder erros = new StringBuilder();
+		erros.append("{\"erros\":[");
+		if(!query.get("codigo").equals("")) {
+			Long codigo = Long.parseLong(query.get("codigo"));
+			if(codigo <= Long.parseLong("0") || codigo > Long.parseLong("9999999999") || codigo-(Integer.parseInt(codigo.toString())) != 0)
+				erros.append("\"codigo\",");
+		}
+		else
+			erros.append("\"codigo\",");
+		if(query.get("nome").length() > 15 || query.get("nome").equals(""))
+			erros.append("\"nome\",");
+		if(!query.get("preco").equals("")) {
+			if(query.getFloat("preco") <= 0)
+				erros.append("\"preco\",");
+		}
+		else
+			erros.append("\"preco\",");
+		if(!query.get("tipo").equalsIgnoreCase("a") && !query.get("tipo").equalsIgnoreCase("b")
+				&& !query.get("tipo").equalsIgnoreCase("s") && !query.get("tipo").equalsIgnoreCase("e"))
+			erros.append("\"tipo\",");
+		if(query.get("descricao").length() > 30)
+			erros.append("\"descricao\"");
+		if(erros.toString().endsWith(","))
+			erros.deleteCharAt(erros.toString().length()-1);
+		erros.append("]}");
+		return erros.toString();
+	}
 }
