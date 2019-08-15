@@ -37,7 +37,6 @@ function cadastrar() {
 
         requisicao.onreadystatechange = function (e) {
             if (requisicao.readyState == 4) {
-                console.log(requisicao.status);
                 if (requisicao.status == 201) {
                     alert("Produto salvo com sucesso");
                     $(`#produto`)[0].reset();
